@@ -1,0 +1,38 @@
+* {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 400;
+    color: #747704;
+}
+
+h1 {
+    font-weight: 100;
+    font-size: 45pt;
+}
+
+h2 {
+    color: #bcbbbb;
+    font-size: 35pt;
+}
+
+hr {
+    border: 2px solid #bcbbbb;
+}
+
+img, embed, object, video {
+	Max-width:100%;
+}
+
+.small-cog {
+    width: 100px;
+    margin: auto;
+}
+
+.medium-cog {
+    width: 150px;
+    margin: auto;
+}
+
+.large-cog {
+    width: 200px;
+    margin: auto;
+}
