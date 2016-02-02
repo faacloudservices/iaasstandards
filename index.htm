@@ -23,9 +23,14 @@
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
     </head>
-    <body>
+    <body data-spy="scroll" data-target="#navbar-example">
         <!--Main Bootstrap Container Element-->
         <div class="container">
+            <div id="navbar-example">
+                <ul class="nav nav-tabs" role="tablist">
+                ...
+                </ul>
+            </div>
             <div class="row">
                 <div class="col-md-3">
                     <img class="img-responsive" src="images/logo-FAA.png" alt="FAA Logo">
@@ -60,7 +65,18 @@
                     </p>
                     <p>This document expands upon the content in that document by holistically outlining three sets of Infrastructure as a Service (IaaS) standards tied to a proposed tri-modal model that aligns to increasing levels of maturity in the adoption of automation and agile development processes. This approach provides core standards for applications at intermediate levels of transformation to enable Line of Business (LOB) and IT shared services leaders to collaboratively make business decisions about whether an application should be in low, medium, or high gear.</p>
                 </div>
-            </div>
+            </div>]
+            <!--Current attempting to add button functionality similar to the USDS Playbook. I'm having issues witht the Bootstrap button classes used on the anchor tags ~SPM on 2FEB16 -->
+            <!--<div class="row">
+                <div class="col-md-12">
+                    <a href="#plays_index_anchor" title="View the Plays">See the plays</a>
+                    <a class="btn btn-default" href="https://github.com/faacloudservices/iaasstandards#readme" role="button">Help improve this content</a>
+                    <a class="btn btn-default" href="#" role="button">Link</a>
+                    <button class="btn btn-default" type="submit">Button</button>
+                    <input class="btn btn-default" type="button" value="Input">
+                    <input class="btn btn-default" type="submit" value="Submit">
+                </div>
+            </div>-->
             <div class="row">
                 <div class="col-md-12">
                     <h2>Introduction to Tri-Modal Approach to Cloud Services</h2>
@@ -118,6 +134,9 @@
                         <li>
                             <h4> Administer platforms and operating systems via a Command Line Interface and automate regular actions through scripts</h4>
                             <p>To the greatest degree possible, manual systems administration shall occur using a command line interface such as BASH shell or PowerShell and all activities shall be logged and retained.</p>
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#powershellModal">PowerShell Training</button>
+                            <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#linuxBashModal">Linux/UNIX Bash Training</button>
                         </li>
                     </ol>
                 </div>
@@ -127,48 +146,91 @@
                     <h2>IaaS Standards for Medium Gear Applications</h2>
                     <ol>
                         <li>
-                            <h4>Use Stem Cell Images to deploy Operating Systems</h4>
-                            <p>The use of golden images shall be avoided and virtual machines shall be implemented using base <a href="http://madstop.com/post/85950592485/golden-image-or-foil-ball-repost">Stem Cell Images</a> that provide a pre-installed and pre-hardened operating system with a core set of security and operations management software and/or agents required by the FAA and/or external partners such as CSGov. In the case of FCS, these stem cell images are orderable as Operating System supplemental features and appear in the Agility Designer tool as workloads.In order to ensure commonality between FCS and on premise FAA environments, the FAA should formally define and maintain standard server images that apply across all environments and work with CSGov to have the images behind the FCS Operating System supplemental features implement these base standards.</p>
+                            <h4>Separate application tiers into separate pools of virtual machines running in separate subnets</h4>
+                            <p>Excepting the most trivial of applications, application tiers shall be refactored into separate pools of one or more virtual machines running in seperate subnets. This achieves greater functional decoupling of the applications tiers and enables greater flexibility in implementing security controls between those tiers usand tighten down the security controls between these tiers using Network ACLs or other security models provided by the deployment environment.</p>
                         </li>
                         <li>
-                            <h4>Use an Automated Configuration Management tool to deploy Platforms and Applications</h4>
-                            <p> The FAA should standardized on a single automated configuration management tool to automate the installation and configuration of middleware across all FAA data centers and cloud environments.</h4>
+                            <h4>Automate deployment of Operating Systems using Stem Cell Images</h4>
+                            <p>The use of golden images shall be avoided and virtual machines shall be implemented using base <a href="http://madstop.com/post/85950592485/golden-image-or-foil-ball-repost">Stem Cell Images</a>, which eschew specialization, middleware, or server roles and only provide the absolute minimal subset of operating system components and management agents (either FAA or external partners such as CSGov) to provide a pre-hardened base operating system targeting a particular deployment environment (on-premise FAA versus cloud). In the case of FCS, these stem cell images are orderable in the Agility Designer tool as Agility Workloads. In order to ensure commonality between FCS and on premise FAA environments, the FAA should formally define and maintain standard server images that apply across all environments and work with CSGov to have the images behind the FCS Operating System supplemental features implement these base standards.</p>
                         </li>
                         <li>
-                            <h4>FAA implements Standard Configurations using Agility Platform and VMWare orchestration engines in order to construction standard configurations.</h4>
+                            <h4>Automate deployment of Platforms and Middleware stacks using an Automated Configuration Management tool</h4>
+                            <p> In concert with the base Stem Cell images discussed above, the FAA shall automate the installation and configuration of middleware using automation assets developed on a common automated configuration management platform that spans all FAA data centers and cloud environments. These automation assets shall deploy the standard configurations of software stacks, such as those outlined in AIT Business Plan Item 15C.119B1, Standard Configurations and Platforms. Examples of automated configuration management tools include
+                            <a href="http://www.puppetlabs.com">Puppet</a>,
+                            <a href="https://www.chef.io/chef/">Chef</a>, and
+                            <a href="http://www.ansible.com/"> Ansible </a>
+                            </h4>
                         </li>
                         <li>
-                            <h4>Separate tiers of an application into separate subnets, such as Web tier, service tier, and data tier, and tighten down the security controls between these tiers.</h4>
+                            <h4>Automate deployment of Applications using an Orchestration Engine.</h4>
+                            <p>TO-DO</p>
                         </li>
+
                         <li>
-                            <h4>Stem Cell Images, Automation Assets, and Orchestration Scripts are treated as software assets and placed under version control. New assets and new versions of assets are reviewed upfront in order to be preapproved and pre-certified by security and configuration management teams prior to being promoted as orderable and deployable from the service catalog.</h4>
+                            <h4>Develop Stem Cell Images, Automation Assets, and Orchestration Scripts using agile techniques and software configuration management (SCM) tools.</h4>
+                            <p>In an <a href="https://www.thoughtworks.com/insights/blog/infrastructure-code-reason-smile">Infrastructure as Code</a> world, traditional operations teams need to form agile infrastrucutre teams capable of building and managing a service catalog of automation assets using the same agile techniques and professional software configuration management tools used by application developers. In a DevOps setting, these agile infrastructure teams work closely with agile application / digital services teams to smooth out the traditional division between development and operations. The assets produced by these agile infrastructure teams populate a service catalog and are consumed by application teams on an as needed basis. The application teams are consumers of these infrastructure automation assets and stakeholders that make feature and function requests and potentially fork automation code and initiate pull requests. The agile infrastructure team works with configuration management and security to get the asset pre-approved and pre-authorized in order to minimize the authorization footprint for individual FAA applications.</p>
                         </li>
                         <li>
                             <h4>Applications combine stem cell images, automation assets, and nested orchestration scripts into a single master orchestration script that acts as the major deployment unit for applications as they move through dev, test, and prod throughout the software development lifecycle. These orchestration scripts shall programmatically define scale units and scaling criteria for deployment environments that provide elasticity.</h4>
+                            <p></p>
                         </li>
                         <li>
                             <h4>Updates to all software installed and configured by automation assets shall not occur via manual systems administration, but shall occur across the FAA's portfolio of applications by updating the automation asset and having an automated configuration management system push out the update. In situations where manual systems administrations is required, this shall occur using a command line interface such as BASH shell or PowerShell and all activities shall be logged and retained.</h4>
                         </li>
+                    </ol>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <h2>IaaS Standards for High Gear Applications</h2>
+                    <ol>
+                        <li>
+                            <h4>Use the U.S. Digital Services Assets as a starting point</h4>
+                            <p>Members of the U.S. Digital Services community have spent considerable time developing a general framework for designing cloud-native digital services. All High Gear applications shall use the <a href="https://playbook.cio.gov/">U.S. Digital Services Playbook</a> and the <a href="https://playbook.cio.gov/designstandards/">U.S. Web Design Standards</a> as a starting point.
+                        </li>
+                        <li>
+                            <h4>Develop Cloud-Native Applications by Default</h4>
+                            <p>Develop highly distributed applications that implement application tiers as load-balanced pools of loosely-coupled stateless nodes that communicate over message queues. Implement horizontal scaling and design for failure using automated health checks that look for node failutre and automatically restore service.
+                        </li>
+                        <li>
+                            <h4>Maximize use of services capable of deployment to alternative CSPs</h4>
+                            <p>When using APIs tied to a particular deployment environment, abstract the proprietary APIs into a modularized connector and attempt to invoke this connector via an interface that enables development of additional connectors in order to be able to use similar services offered by other CSPs.</p>
+                        </li>
+                        <li>
+                            <h4>Modularize the APIs of proprietary services into external connectors invoked by an abstraction layer</h4>
+                            <p>When proprietary cloud services are required, abstract the APIs of those services into a modularized connector and attempt to invoke this connector via an interface that enables development of additional connectors in order to be able to use similar services offered by other CSPs. To the greatest degree possible, design an abstraction that is designed to be extensible to alternative CSP services via additional connector modules.</p>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <h2>Closing Thoughts</h2>
+                    <ol>
+                        <li>
+                            <h4>Judiciously bring battle-tested innovation from the cloud back into FAA data centers</h4>
+                            <p>While the FAA has a stated objective to migrate application to the cloud en masse in order to minimize our data center footprint, there shall likely continue to be a subset of mission-critical FAA applications that shall continue to run within FAA data centers, either due to security or regulatory requirements or due to functional low-latency dependencies on scale-up servers such as mainframes. This shall likely be especially true of some of the core systems and applications powering the National Airspace System. In these instances, the FAA should consider judiciously leveraging concepts such as stem cell images, automated configuration management, and orchestration engines within on-premise FAA data centers. In order to do this, TechOps, NextGen, and AIF personnel must
 
+
+
+                                This should be executed in a manner that embraces and extends existing investments in infrastrucutre technologies
+
+
+
+                                Avoid Lock in by retooling FAA Data Centers for Medium Gear and High Gear Applications
+
+                                While the FCS cloud is a key enabler
+
+
+                                The FAA shall evolve the current on-premise VMWare environments into private clouds in order to be able to host �cloud native� applications inside of FAA facilities. This shall require a common automated configuration management tool for the FCS cloud domains and the on-premise data centers. This shall also require an orchestration engine similar that provides similar functionality to the FCS cloud domains. To enable full reuse of IaaS orchestration scripts, this would require the FAA to license and administer instances of the Agility Platform to run on top of our existing FAA data centers. As the FAA pursues Platform as a Service (PaaS), this will require the FAA to license and administer additional cloud middleware components capable of hosting and orchestrating containers or alternative PaaS units of deployment.</p>
+                        </li>
                     </ol>
                 </div>
             </div>
 
-        Concept: In Advanced Disaster Recovery
-        To the greatest degree possible, avoid use of CSP-specific functionality to retain ability to migrate between CSPs and on premise FAA environments. When using vendor-specific APIs or services, abstract the proprietary APIs into a modularized connector and attempt to invoke this connector via an interface that enables development of additional connectors in order to be able to use similar services offered by other CSPs.
 
-        Multi-AZ High Availability
 
-        All new web applications shall be architected using loosely-coupled stateless notes
 
-        Applications shall not be stacked on virtual machines, as in no database, application server, or web server shall serve more than a single application.
-        Excepting the most trivial of applications, applications shall be refactored into tiers running separate pools or one or more virtual machines. This means that application servers shall not reside alongside databases on the same virtual machine.
-
-        Node Failure: To the greatest degree possible, refactored applications shall implement health checks and automate recovery processes for the following:
-        * Unexpected Hardware failure leading to automatic standup of replacement node using standard config and last good backup and/or restoration of last good snapshot.
-        * Emergency shutdown signal from CSP and/or Agility Platform, requiring rapid graceful shutdown.
-        * Operating System or application forces a shutdown, leading to an automatic reboot and health check
-        * Substantially degraded performance
 
         Latency: To the greatest degree possible, Internet-facing web applications shall be hosted outside of the Trusted Internet Connection (TIC) in entirety. Depending on the degree of integration with FAA backend systems, this may not be feasible.  If this is the case, the bandwidth and latency that traverses the FTI WAN SDP and the TIC should be closely examined to ensure acceptable end-user performance without adverse impact to other FAA applications. Until the FAA has access to DHS-certified �TIC Ready� internet gateways from our CSPs, an Internet-facing �cloud native� application that integrates with legacy backend FAA systems may not make business sense running in an FCS cloud domain depending on the bandwidth
 
@@ -180,15 +242,73 @@
 
 
         Appendix: Avoid Lock in by retooling FAA Data Centers for Medium Gear and High Gear Applications
-        The FAA shall evolve the current on-premise VMWare environments into private clouds in order to be able to host �cloud native� applications inside of FAA facilities. This shall require a common automated configuration management tool for the FCS cloud domains and the on-premise data centers. This shall also require an orchestration engine similar that provides similar functionality to the FCS cloud domains. To enable full reuse of IaaS orchestration scripts, this would require the FAA to license and administer instances of the Agility Platform to run on top of our existing FAA data centers. As the FAA pursues Platform as a Service (PaaS), this will require the FAA to license and administer additional cloud middleware components capable of hosting and orchestrating containers or alternative PaaS units of deployment.
+
 
                     </p>
             </div>
         </div>
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="js/bootstrap.min.js"></script>
+
+
+        <!-- PowerShell Training Modal -->
+        <div class="modal fade" id="powershellModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">PowerShell Training</h4>
+            </div>
+            <div class="modal-body">
+                <p>For better or worse, the administration of Windows Server and the Microsoft Software stack has historically been performed through graphical interfaces. For this reason, many administrators of Microsoft software stacks are not comfortable working a command line environment. Additionally, many systems administrators fall back on the legacy DOS prompt and scripting via *.bat and *.cmd scripts. Over the past few years, Microsoft has spent considerable time building out a richer and full-reatures shell environment called PowerShell, and this environment is essentially at functional parity with the Linux BASH shell. Mastering this environment should be a top priority for all FAA personnel that regularly work with the Microsoft stack.</p>
+                <p>For those personnel that subscribe to CBTNuggets, there are two very comprehensive courses on PowerShell</p>
+                <ul>
+                    <li><a href="https://www.cbtnuggets.com/it-training/powershell-4-foundations">PowerShell 4 Foundations [Requires CBT Nuggets Subscription]</a></li>
+                    <li><a href="https://www.cbtnuggets.com/it-training/microsoft-windows-powershell-2-3-4">Windows PowerShell v2-v3-v4 Ultimate Training [Requires CBT Nuggets Subscription]</a></li>
+                </ul>
+                <p>For all others, check out the free resources available on the Microsoft Virtual Academy site</p>
+                <ul>
+                    <li><a href="https://mva.microsoft.com/en-US/training-courses/getting-started-with-powershell-30-jump-start-8276">Getting Started with PowerShell 3.0 Jump Start</a></li>
+                    <li><a href="https://mva.microsoft.com/en-US/training-courses/advanced-tools-scripting-with-powershell-30-jump-start-8277?l=WOWaGUWy_8604984382">Advanced Tools & Scripting with PowerShell 3.0 Jump Start</a></li>
+                    <li><a href="https://mva.microsoft.com/en-US/training-courses/getting-started-with-powershell-desired-state-configuration-dsc-8672?l=ZwHuclG1_2504984382">Getting Started with PowerShell Desired State Configuration (DSC)</a></li>
+                    <li><a href="https://mva.microsoft.com/en-US/training-courses/advanced-powershell-desired-state-configuration-dsc-and-custom-resources-8702?l=3DnsS2H1_1504984382">Advanced PowerShell Desired State Configuration (DSC) and Custom Resources</a></li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+            </div>
+        </div>
+        </div>
+
+        <!-- Linux BASH Training Modal -->
+        <div class="modal fade" id="linuxBashModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Linux/UNIX Bash Training</h4>
+            </div>
+            <div class="modal-body">
+                <p>Most UNIX and Linux systems administators are culturally experienced with working in the Bash shell. However, many personnel can benefit from training beyond core shell scripting to the use of more robust scripting languages such as Python. Here is a range of materials to cover novice to experienced administrators.</p>
+                <ul>
+                    <li><a href="https://www.edx.org/course/introduction-linux-linuxfoundationx-lfs101x-2#!">Introduction to Linux</a></li>
+                    <li><a href="http://www.tldp.org/LDP/abs/html/">Advanced Bash-Scripting Guide</a></li>
+                    <li><a href="http://docs.linuxtone.org/ebooks/Python/OReilly.Python.for.Unix.and.Linux.System.Administration.Sep.2008.pdf">Python for Unix and Linux System Administration [PDF]</a></li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+            </div>
+        </div>
+        </div>
 
 
 
+                                    <ol>
 
+                            </ol>
 
 
 
